@@ -60,6 +60,23 @@ router.get("/:id/", async function(req, res, next) {
   }
 });
 
+
+/** Find a customer, given their name or part of their name. */
+
+router.get("/search/:searchString/", async function(req, res, next) {
+  try {
+
+    const customers = await Customer.nameSearch(req.params.searchString);
+
+    //TODO: switch to req.body.searchString and use a formor use string template literal for route
+    return res.render("customer_list.html", { customers });
+
+  } catch (err) {
+    return next(err);
+  }
+});
+
+
 /** Show form to edit a customer. */
 
 router.get("/:id/edit/", async function(req, res, next) {

@@ -1,5 +1,6 @@
 /** Customer for Lunchly */
 
+const { search } = require("../app");
 const db = require("../db");
 const Reservation = require("./reservation");
 
@@ -29,6 +30,22 @@ class Customer {
     return results.rows.map(c => new Customer(c));
   }
 
+  static async nameSearch(searchString){
+    console.log(`searching for ${searchString}`);
+    const results = await db.query(
+      `SELECT id, 
+      first_name AS "firstName",  
+      last_name AS "lastName", 
+      phone, 
+      notes
+    FROM customers
+    WHERE first_name ilike '${searchString}'
+    OR last_name ilike '${searchString}'
+    ORDER BY last_name, first_name`
+    );
+    return results.rows.map(c => new Customer(c));
+  }
+
   /** get a customer by ID. */
 
   static async get(id) {
@@ -53,11 +70,17 @@ class Customer {
     return new Customer(customer);
   }
 
+  /** Get customer's full name (by id) */
+
+  get fullName(){
+    return `${this.firstName} ${this.lastName}`;
+  }
+
   /** get all reservations for this customer. */
 
   async getReservations() {
     return await Reservation.getReservationsForCustomer(this.id);
-  }
+  } 
 
   /** save this customer. */
 
