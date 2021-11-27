@@ -61,20 +61,22 @@ router.get("/:id/", async function(req, res, next) {
 });
 
 
-/** Find a customer, given their name or part of their name. */
 
-router.get("/search/:searchString/", async function(req, res, next) {
+/** Show certain customer, given a name search in a nav bar search box. */
+router.post("/search/", async function(req, res, next) {
   try {
+    const { searchString } = req.body;
 
-    const customers = await Customer.nameSearch(req.params.searchString);
+    const customers = await Customer.nameSearch(searchString);
 
-    //TODO: switch to req.body.searchString and use a formor use string template literal for route
+    //TODO: switch to req.body.searchString and use a form or use string template literal for route
     return res.render("customer_list.html", { customers });
 
-  } catch (err) {
+  } catch (err) { 
     return next(err);
   }
 });
+
 
 
 /** Show form to edit a customer. */

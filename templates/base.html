@@ -32,7 +32,17 @@
         <li class="nav-item">
           <a class="nav-link" href="/add/">Add a Customer</a>
         </li>
-      </ul>
+
+      <!-- QUESTIONS:
+      had trouble reaching the route at all.  Tried
+      /search
+     /search/
+      http://localhost:3000/search/ -->
+      </ul><form class="form-inline my-2 my-lg-0" action = "/search/" method="POST">
+        <input class="form-control mr-sm-2" placeholder="Search by Name" id = "searchString" name ="searchString" aria-label="Search">
+        <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+
     </div>
   </nav>
 
