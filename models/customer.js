@@ -30,6 +30,7 @@ class Customer {
     return results.rows.map(c => new Customer(c));
   }
 
+  /**Search customers by name */
   static async nameSearch(searchString){
     console.log(`searching for ${searchString}`);
     const results = await db.query(
@@ -44,6 +45,23 @@ class Customer {
     ORDER BY last_name, first_name`
     );
     return results.rows.map(c => new Customer(c));
+  }
+
+  /**get top ten customers by number of reservations */
+  static async getTop10(){
+    const results = await db.query(
+      `SELECT customer_id as "id", first_name as "firstName", last_name as "lastName", count(r.id) as count
+      FROM reservations as r join customers as c on customer_id=c.id 
+      GROUP BY customer_id, first_name, last_name 
+      ORDER BY COUNT(r.id) DESC 
+      LIMIT 10`
+      )
+
+      for (let customer of results.rows){
+
+        // console.log(`Customer.id = ${customer.id}, Customer.count=${customer.count}`)
+      }
+      return results.rows.map(c => new Customer(c));
   }
 
   /** get a customer by ID. */

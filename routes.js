@@ -46,6 +46,20 @@ router.post("/add/", async function(req, res, next) {
   }
 });
 
+
+/**Show top 10 customers */
+router.get("/topten/", async function(req, res, next) {
+  try {
+    console.log( `***HERE***`)
+    const customers = await Customer.getTop10();
+   
+    return res.render("top_ten_list.html", { customers });
+    
+  } catch (err) {
+    return next(err);
+  }
+});
+
 /** Show a customer, given their ID. */
 
 router.get("/:id/", async function(req, res, next) {
@@ -60,16 +74,12 @@ router.get("/:id/", async function(req, res, next) {
   }
 });
 
-
-
 /** Show certain customer, given a name search in a nav bar search box. */
+
 router.post("/search/", async function(req, res, next) {
   try {
-    const { searchString } = req.body;
 
-    const customers = await Customer.nameSearch(searchString);
-
-    //TODO: switch to req.body.searchString and use a form or use string template literal for route
+    const customers = await Customer.nameSearch(req.body.searchString);
     return res.render("customer_list.html", { customers });
 
   } catch (err) { 
