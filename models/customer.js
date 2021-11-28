@@ -57,10 +57,6 @@ class Customer {
       LIMIT 10`
       )
 
-      for (let customer of results.rows){
-
-        // console.log(`Customer.id = ${customer.id}, Customer.count=${customer.count}`)
-      }
       return results.rows.map(c => new Customer(c));
   }
 
